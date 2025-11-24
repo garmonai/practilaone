@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пиксельный Курьёз — Галерея странностей</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+        :root {
+            --ink: #1b1725;
+            --violet: #8745ff;
+            --lime: #d7ff70;
+            --amber: #ffb347;
+            --magenta: #ff5bba;
+            --grid: rgba(255, 255, 255, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: "Press Start 2P", "Courier New", monospace;
+            color: var(--lime);
+            background:
+                radial-gradient(circle at top left, rgba(255, 255, 255, 0.12), transparent 45%),
+                radial-gradient(circle at bottom right, rgba(255, 94, 186, 0.2), transparent 55%),
+                repeating-linear-gradient(0deg, var(--grid) 0, var(--grid) 2px, transparent 2px, transparent 24px),
+                repeating-linear-gradient(90deg, rgba(255, 179, 71, 0.07) 0, rgba(255, 179, 71, 0.07) 2px, transparent 2px, transparent 24px),
+                #0e0a16;
+            image-rendering: pixelated;
+        }
+
+        main {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 3rem);
+        }
+
+        header {
+            display: grid;
+            gap: 1.5rem;
+            padding: 2rem;
+            background: rgba(27, 23, 37, 0.85);
+            border: 4px solid var(--violet);
+            box-shadow: 0 0 0 4px #130d24, 0 0 22px rgba(135, 69, 255, 0.6);
+            border-radius: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::after {
+            content: "ГЛЮК // ГЛЮК // ГЛЮК";
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            font-size: 0.55rem;
+            color: rgba(215, 255, 112, 0.15);
+            letter-spacing: 0.3rem;
+            animation: drift 14s linear infinite;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+            color: var(--amber);
+            text-shadow:
+                4px 4px 0 rgba(135, 69, 255, 0.6),
+                -3px -3px 0 rgba(255, 91, 186, 0.3);
+        }
+
+        .subtitle {
+            font-size: 0.85rem;
+            line-height: 1.8;
+            color: rgba(215, 255, 112, 0.85);
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.7rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--magenta);
+            background: rgba(135, 69, 255, 0.15);
+            padding: 0.75rem 1rem;
+            border: 2px solid rgba(255, 91, 186, 0.4);
+            box-shadow: 0 0 0 3px rgba(27, 23, 37, 0.9), 0 6px 0 rgba(255, 91, 186, 0.4);
+            display: inline-flex;
+            gap: 0.6rem;
+            position: relative;
+            transform: translateY(0);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        nav a::after {
+            content: "◼︎";
+            color: var(--lime);
+        }
+
+        nav a:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 0 0 3px rgba(27, 23, 37, 0.9), 0 10px 0 rgba(255, 91, 186, 0.45);
+        }
+
+        .pixel-frame {
+            margin-top: 3rem;
+            border: 6px solid rgba(255, 179, 71, 0.8);
+            padding: clamp(2rem, 5vw, 3.5rem);
+            position: relative;
+            background: rgba(19, 13, 36, 0.88);
+            box-shadow:
+                inset 0 0 0 4px rgba(255, 179, 71, 0.4),
+                0 0 0 4px rgba(27, 23, 37, 0.95),
+                0 24px 45px rgba(135, 69, 255, 0.25);
+        }
+
+        .pixel-frame::before,
+        .pixel-frame::after {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border: 3px solid var(--violet);
+            background: rgba(255, 91, 186, 0.4);
+        }
+
+        .pixel-frame::before {
+            top: -12px;
+            left: 24px;
+        }
+
+        .pixel-frame::after {
+            bottom: -12px;
+            right: 24px;
+        }
+
+        .glitch {
+            position: relative;
+            font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+            color: var(--magenta);
+            margin-bottom: 2rem;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            mix-blend-mode: screen;
+        }
+
+        .glitch::before {
+            color: rgba(255, 91, 186, 0.6);
+            transform: translate(2px, 2px);
+        }
+
+        .glitch::after {
+            color: rgba(135, 69, 255, 0.7);
+            transform: translate(-2px, -2px);
+        }
+
+        .ascii-gallery {
+            display: grid;
+            gap: 2.5rem;
+        }
+
+        .ascii-panel {
+            display: grid;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: rgba(14, 10, 22, 0.85);
+            border: 3px solid rgba(135, 69, 255, 0.45);
+            box-shadow: inset 0 0 0 3px rgba(255, 91, 186, 0.2);
+        }
+
+        .ascii-panel h2 {
+            font-size: 0.95rem;
+            color: var(--amber);
+            margin: 0;
+        }
+
+        .ascii-panel pre {
+            margin: 0;
+            padding: 1rem;
+            font-size: 0.68rem;
+            line-height: 1.5;
+            background: rgba(19, 13, 36, 0.9);
+            border: 2px solid rgba(255, 179, 71, 0.3);
+            overflow-x: auto;
+            color: rgba(215, 255, 112, 0.85);
+        }
+
+        .marquee {
+            margin: 3rem 0 1rem;
+            padding: 0.75rem 1rem;
+            border: 3px solid rgba(255, 91, 186, 0.6);
+            background: rgba(135, 69, 255, 0.12);
+            overflow: hidden;
+            position: relative;
+            color: rgba(255, 179, 71, 0.9);
+            font-size: 0.65rem;
+        }
+
+        .marquee span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: ticker 22s linear infinite;
+            white-space: nowrap;
+        }
+
+        .quote {
+            margin-top: 2.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: rgba(255, 91, 186, 0.85);
+        }
+
+        .quote span {
+            display: block;
+            margin-top: 1rem;
+            font-size: 0.65rem;
+            color: rgba(215, 255, 112, 0.6);
+        }
+
+        .pixel-life {
+            margin-top: 3.25rem;
+            display: grid;
+            gap: 1.25rem;
+        }
+
+        .pixel-life .legend {
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.28rem;
+            color: rgba(255, 179, 71, 0.65);
+            text-align: center;
+        }
+
+        .pixel-life-grid {
+            display: grid;
+            grid-template-columns: repeat(12, minmax(14px, 1fr));
+            gap: 8px;
+            padding: 1.4rem;
+            background: rgba(14, 10, 22, 0.9);
+            border: 3px solid rgba(135, 69, 255, 0.35);
+            box-shadow:
+                inset 0 0 0 3px rgba(255, 91, 186, 0.18),
+                0 0 18px rgba(135, 69, 255, 0.25);
+        }
+
+        .pixel-life-grid span {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: rgba(215, 255, 112, 0.18);
+            box-shadow: 0 0 0 2px rgba(255, 91, 186, 0.08);
+            animation: lifePulse 3.8s steps(2) infinite;
+        }
+
+        .pixel-life-grid span:nth-child(3n) {
+            animation-duration: 2.6s;
+            background: rgba(255, 91, 186, 0.22);
+        }
+
+        .pixel-life-grid span:nth-child(4n) {
+            animation-duration: 4.4s;
+            background: rgba(135, 69, 255, 0.2);
+        }
+
+        .pixel-life-grid span:nth-child(5n) {
+            animation-duration: 5.2s;
+            background: rgba(255, 179, 71, 0.28);
+        }
+
+        .pixel-life-grid span:nth-child(7n) {
+            animation-delay: -1.2s;
+        }
+
+        .pixel-life-grid span:nth-child(11n) {
+            animation-delay: -2.4s;
+        }
+
+        .pixel-life .caption {
+            font-size: 0.62rem;
+            text-align: center;
+            color: rgba(215, 255, 112, 0.55);
+            line-height: 1.7;
+        }
+
+        .pixel-arcade {
+            margin-top: 3.75rem;
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .pixel-arcade .legend {
+            font-size: 0.64rem;
+            text-transform: uppercase;
+            letter-spacing: 0.24rem;
+            color: rgba(255, 91, 186, 0.68);
+            text-align: center;
+        }
+
+        .arcade-stage {
+            position: relative;
+            padding: 2rem;
+            border: 4px solid rgba(135, 69, 255, 0.6);
+            background: rgba(14, 10, 22, 0.92);
+            box-shadow:
+                inset 0 0 0 4px rgba(255, 179, 71, 0.2),
+                0 0 18px rgba(135, 69, 255, 0.35);
+        }
+
+        .maze {
+            display: grid;
+            grid-template-columns: repeat(24, 16px);
+            grid-template-rows: repeat(12, 16px);
+            gap: 4px;
+            justify-content: center;
+        }
+
+        .maze span {
+            width: 16px;
+            height: 16px;
+            background: rgba(27, 23, 37, 0.7);
+            box-shadow: inset 0 0 0 2px rgba(135, 69, 255, 0.3);
+        }
+
+        .maze span.wall {
+            background: rgba(135, 69, 255, 0.35);
+            box-shadow: 0 0 10px rgba(135, 69, 255, 0.5);
+        }
+
+        .maze span.shard {
+            background: rgba(135, 69, 255, 0.18);
+            box-shadow: inset 0 0 0 2px rgba(255, 91, 186, 0.35);
+            position: relative;
+        }
+
+        .maze span.shard::after {
+            content: "";
+            position: absolute;
+            inset: 4px;
+            border: 2px dashed rgba(255, 179, 71, 0.6);
+            transform: rotate(12deg);
+            opacity: 0.85;
+        }
+
+        .maze span.pellet {
+            position: relative;
+            background: rgba(27, 23, 37, 0.85);
+        }
+
+        .maze span.pellet::after {
+            content: "";
+            position: absolute;
+            inset: 5px;
+            background: rgba(255, 179, 71, 0.8);
+            box-shadow: 0 0 6px rgba(255, 179, 71, 0.7);
+            border-radius: 4px;
+        }
+
+        .player,
+        .ghost {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+        }
+
+        .player {
+            background: rgba(215, 255, 112, 0.95);
+            box-shadow: 0 0 16px rgba(215, 255, 112, 0.8);
+            animation: wander 9s linear infinite;
+        }
+
+        .player::before {
+            content: "";
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 4px solid #0e0a16;
+            border-right-color: transparent;
+            border-top-color: transparent;
+            left: 4px;
+            top: 4px;
+            transform: rotate(45deg);
+        }
+
+        .ghost {
+            background: rgba(255, 91, 186, 0.85);
+            box-shadow: 0 0 16px rgba(255, 91, 186, 0.7);
+            border-radius: 8px 8px 4px 4px;
+            animation: haunt 7s linear infinite;
+        }
+
+        .ghost::before,
+        .ghost::after {
+            content: "";
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #fff;
+            border-radius: 50%;
+            top: 6px;
+        }
+
+        .ghost::before {
+            left: 4px;
+        }
+
+        .ghost::after {
+            right: 4px;
+        }
+
+        .arcade-stage .fragments span {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(135, 69, 255, 0.45);
+            background: rgba(255, 91, 186, 0.18);
+            box-shadow: 0 0 14px rgba(135, 69, 255, 0.4);
+            --angle: 18deg;
+            transform: translateY(0) rotate(var(--angle));
+            animation: fragmentFloat 6s ease-in-out infinite;
+        }
+
+        .arcade-stage .fragments span:nth-child(1) {
+            top: -22px;
+            left: 56px;
+            --angle: 24deg;
+            animation-delay: -1.2s;
+        }
+
+        .arcade-stage .fragments span:nth-child(2) {
+            top: -28px;
+            right: 78px;
+            --angle: -16deg;
+            animation-delay: -0.6s;
+        }
+
+        .arcade-stage .fragments span:nth-child(3) {
+            bottom: -26px;
+            left: 92px;
+            --angle: -28deg;
+            animation-delay: -2s;
+        }
+
+        .arcade-stage .fragments span:nth-child(4) {
+            bottom: -22px;
+            right: 64px;
+            --angle: 12deg;
+            animation-delay: -1.6s;
+        }
+
+        .side-legend {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            font-size: 0.6rem;
+            color: rgba(215, 255, 112, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.18rem;
+        }
+
+        .cube-link {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 62px;
+            height: 62px;
+            margin: 2.6rem auto 0;
+            text-decoration: none;
+            filter: drop-shadow(0 0 12px rgba(255, 179, 71, 0.6));
+        }
+
+        .cube-link::after {
+            content: "MOVE";
+            position: absolute;
+            bottom: -1.6rem;
+            font-size: 0.5rem;
+            letter-spacing: 0.3rem;
+            color: rgba(255, 179, 71, 0.58);
+        }
+
+        .cube {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(140deg, #ffd65c, #ff9a1f);
+            border: 4px solid rgba(0, 0, 0, 0.8);
+            box-shadow: inset -4px -6px 0 rgba(0, 0, 0, 0.4), 0 0 18px rgba(255, 198, 73, 0.8);
+            animation: cubeFloat 4s ease-in-out infinite;
+        }
+
+        .cube-shadow {
+            position: absolute;
+            bottom: -12px;
+            width: 36px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 179, 71, 0.32);
+            filter: blur(6px);
+            animation: cubeShadow 4s ease-in-out infinite;
+        }
+
+        footer {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 0.7rem;
+            color: rgba(215, 255, 112, 0.55);
+        }
+
+        footer a {
+            color: rgba(255, 179, 71, 0.8);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes ticker {
+            to {
+                transform: translateX(-100%);
+            }
+        }
+
+        @keyframes drift {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-60%);
+            }
+        }
+
+        @keyframes lifePulse {
+            0%, 10%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 2px rgba(255, 91, 186, 0.1);
+                filter: hue-rotate(0deg);
+            }
+            25% {
+                transform: scale(1.15);
+                box-shadow: 0 0 12px 0 rgba(255, 179, 71, 0.6);
+                filter: hue-rotate(25deg);
+            }
+            45% {
+                transform: scale(0.92);
+                box-shadow: 0 0 4px 0 rgba(135, 69, 255, 0.55);
+                filter: hue-rotate(120deg);
+            }
+            65% {
+                transform: scale(1.12);
+                box-shadow: 0 0 14px 0 rgba(215, 255, 112, 0.7);
+                filter: hue-rotate(260deg);
+            }
+        }
+
+        @keyframes wander {
+            0% {
+                transform: translate(60px, 20px);
+            }
+            25% {
+                transform: translate(240px, 20px);
+            }
+            37% {
+                transform: translate(240px, 120px);
+            }
+            55% {
+                transform: translate(120px, 120px);
+            }
+            70% {
+                transform: translate(120px, 220px);
+            }
+            85% {
+                transform: translate(20px, 220px);
+            }
+            100% {
+                transform: translate(60px, 20px);
+            }
+        }
+
+        @keyframes haunt {
+            0% {
+                transform: translate(260px, 220px);
+            }
+            25% {
+                transform: translate(260px, 120px);
+            }
+            45% {
+                transform: translate(360px, 120px);
+            }
+            60% {
+                transform: translate(360px, 20px);
+            }
+            80% {
+                transform: translate(160px, 20px);
+            }
+            100% {
+                transform: translate(260px, 220px);
+            }
+        }
+
+        @keyframes cubeFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        @keyframes cubeShadow {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(0.8);
+                opacity: 0.4;
+            }
+        }
+
+        @keyframes fragmentFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(var(--angle));
+                opacity: 0.75;
+            }
+            50% {
+                transform: translateY(8px) rotate(var(--angle));
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 720px) {
+            body {
+                background-size: 40px 40px;
+            }
+
+            header,
+            .pixel-frame {
+                padding: 1.5rem;
+            }
+
+            nav {
+                flex-direction: column;
+            }
+
+            nav a {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .ascii-panel pre {
+                font-size: 0.6rem;
+            }
+
+            .pixel-life-grid {
+                grid-template-columns: repeat(8, minmax(18px, 1fr));
+            }
+
+            .maze {
+                transform: scale(0.85);
+                transform-origin: top center;
+            }
+
+            .arcade-stage .fragments span {
+                display: none;
+            }
+
+            .side-legend {
+                flex-direction: column;
+                gap: 0.6rem;
+            }
+
+            .cube-link {
+                margin-top: 2rem;
+                transform: scale(0.85);
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <header>
+            <nav>
+                <a href="index.html" title="Вернуться в теплоту">назад</a>
+                <a href="#hall-01">зал 01</a>
+                <a href="#hall-02">зал 02</a>
+                <a href="#hall-03">зал 03</a>
+            </nav>
+            <h1>Пиксельный Курьёз</h1>
+            <p class="subtitle">Кодированное пространство, собранное творческими людьми, которые забыли, что такое прямые линии.</p>
+        </header>
+
+        <section class="pixel-frame" id="hall-01">
+            <h2 class="glitch" data-text="зал №01 // музей случайных форм">зал №01 // музей случайных форм</h2>
+            <div class="ascii-gallery">
+                <article class="ascii-panel">
+                    <h2>Экспонат 1A: «Левитирующий кит»</h2>
+                    <pre>
+         __.--._
+      .-"  ___  "-.
+    _/  .-"   "-.  \_
+  .'   /  .-. .-. \   '.
+ /    |  ( o ) ( o ) |    \
+;      \     ‡     /      ;
+|___    '._/___\_.'    ___|
+    """--.._   _..--"""
+                    </pre>
+                    <p>Нарисован пиксельной тушью и случайными мыслями ночных кураторов.</p>
+                </article>
+
+                <article class="ascii-panel" id="hall-02">
+                    <h2>Экспонат 2B: «Собеседник, который ответит позже»</h2>
+                    <pre>
+┌────────────────────────────┐
+│ Загрузка сознания... 89%   │
+│                            │
+│    ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓    │
+│    ▓  вы пока подождите ▓   │
+│    ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓    │
+│                            │
+│  *пиксельная тишина*       │
+└────────────────────────────┘
+                    </pre>
+                    <p>Никто не знает, что произойдёт, когда индикатор достигнет 100%.</p>
+                </article>
+
+                <article class="ascii-panel" id="hall-03">
+                    <h2>Экспонат 3C: «Комната с окнами внутрь»</h2>
+                    <pre>
+╭──────────────╮ ╭──────────────╮
+│ [] [] [] []  │ │ [] [] [] []  │
+│   ┌──┐ ┌──┐  │ │  ┌──┐ ┌──┐   │
+│   └──┘ └──┘  │ │  └──┘ └──┘   │
+│ ИНТРОСПЕКЦИЯ │ │  ≋ ВОСПОМИНАНИЯ │
+╰──────────────╯ ╰──────────────╯
+                    </pre>
+                    <p>Каждое окно показывает чей-то сон, но пиксели забыли чей именно.</p>
+                </article>
+            </div>
+
+            <div class="marquee">
+                <span>НАБЛЮДАТЕЛЬ: "я слышу шорохи между пикселями" ◊ КУРАТОР: "это всего лишь цветовые гличи" ◊ ГОСТЬ: "можно я останусь жить в экспонате 2B?" ◊</span>
+            </div>
+
+            <div class="quote">
+                «Искусство — это когда строки кода начинают мечтать об альтернативных вселенных».
+                <span>// архив творческого кооператива «Неоновые Лососи»</span>
+            </div>
+
+            <div class="pixel-life" aria-hidden="true">
+                <p class="legend">жизнь пикселей // ночное наблюдение</p>
+                <div class="pixel-life-grid">
+                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+                <p class="caption">Каждый огонёк загорается, когда кто-то вспоминает забытый сон. Мы просто фиксируем дыхание пиксельной вселенной.</p>
+            </div>
+
+            <div class="pixel-arcade" aria-hidden="true">
+                <p class="legend">бытовая хроника // пиксельный вечер</p>
+                <div class="arcade-stage">
+                    <div class="maze">
+                        <!-- Row 1 -->
+                        <span class="wall"></span><span class="wall"></span><span class="wall"></span><span class="wall"></span><span class="shard"></span><span class="shard"></span><span class="wall"></span><span class="wall"></span><span class="wall"></span><span class="wall"></span><span class="shard"></span><span class="shard"></span><span class="wall"></span><span class="wall"></span><span class="wall"></span><span class="wall"></span><span class="shard"></span><span class="shard"></span><span class="wall"></span><span class="wall"></span><span class="wall"></span><span class="shard"></span><span class="wall"></span><span class="wall"></span>
+                        <!-- Row 2 -->
+                        <span class="wall"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="shard"></span>
+                        <!-- Row 3 -->
+                        <span class="shard"></span><span class="pellet"></span><span class="wall"></span><span></span><span></span><span class="wall"></span><span class="pellet"></span><span class="wall"></span><span class="wall"></span><span class="wall"></span><span class="wall"></span><span class="pellet"></span><span class="wall"></span><span class="wall"></span><span class="wall"></span><span class="wall"></span><span class="pellet"></span><span class="wall"></span><span class="wall"></span><span class="wall"></span><span class="wall"></span><span class="pellet"></span><span class="pellet"></span><span class="shard"></span>
+                        <!-- Row 4 -->
+                        <span class="shard"></span><span class="pellet"></span><span></span><span class="wall"></span><span class="wall"></span><span></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="shard"></span>
+                        <!-- Row 5 -->
+                        <span class="shard"></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="wall"></span><span class="wall"></span><span class="wall"></span><span class="wall"></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="shard"></span>
+                        <!-- Row 6 -->
+                        <span class="shard"></span><span class="pellet"></span><span></span><span class="wall"></span><span class="wall"></span><span></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="shard"></span>
+                        <!-- Row 7 -->
+                        <span class="shard"></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="shard"></span>
+                        <!-- Row 8 -->
+                        <span class="wall"></span><span class="pellet"></span><span class="pellet"></span><span class="wall"></span><span class="wall"></span><span class="pellet"></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="pellet"></span><span class="wall"></span><span class="pellet"></span><span class="wall"></span><span class="wall"></span><span class="wall"></span><span class="wall"></span><span class="pellet"></span><span class="wall"></span><span class="wall"></span><span class="wall"></span><span class="wall"></span><span class="pellet"></span><span class="pellet"></span><span class="shard"></span>
+                        <!-- Row 9 -->
+                        <span class="shard"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span></span><span class="pellet"></span><span></span><span class="pellet"></span><span class="pellet"></span><span></span><span class="pellet"></span><span></span><span class="pellet"></span><span class="pellet"></span><span></span><span class="pellet"></span><span></span><span class="pellet"></span><span class="pellet"></span><span class="shard"></span>
+                        <!-- Row 10 -->
+                        <span class="shard"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="shard"></span>
+                        <!-- Row 11 -->
+                        <span class="wall"></span><span class="pellet"></span><span class="pellet"></span><span></span><span class="pellet"></span><span></span><span class="pellet"></span><span></span><span class="pellet"></span><span></span><span class="pellet"></span><span></span><span class="pellet"></span><span></span><span class="pellet"></span><span></span><span class="pellet"></span><span></span><span class="pellet"></span><span></span><span class="pellet"></span><span class="pellet"></span><span class="pellet"></span><span class="shard"></span>
+                        <!-- Row 12 -->
+                        <span class="wall"></span><span class="shard"></span><span class="wall"></span><span class="wall"></span><span class="shard"></span><span class="wall"></span><span class="wall"></span><span class="shard"></span><span class="wall"></span><span class="wall"></span><span class="shard"></span><span class="wall"></span><span class="wall"></span><span class="shard"></span><span class="wall"></span><span class="wall"></span><span class="shard"></span><span class="wall"></span><span class="wall"></span><span class="shard"></span><span class="wall"></span><span class="wall"></span><span class="wall"></span><span class="shard"></span>
+                    </div>
+                    <div class="fragments" aria-hidden="true">
+                        <span></span><span></span><span></span><span></span>
+                    </div>
+                    <div class="player"></div>
+                    <div class="ghost"></div>
+                </div>
+                <div class="side-legend">
+                    <span>герой ужина</span>
+                    <span>пиксельный сосед</span>
+                    <span>запас рисовых шариков: бесконечность</span>
+                </div>
+                <a href="void.html" class="cube-link" aria-label="не заходить">
+                    <span class="cube" aria-hidden="true"></span>
+                    <span class="cube-shadow" aria-hidden="true"></span>
+                </a>
+            </div>
+        </section>
+
+        <footer>
+            Путь назад к теплу: <a href="index.html">Теплая Лента</a>. Сохраните гличи, они приходят не зря.
+        </footer>
+    </main>
+</body>
+</html>
+
